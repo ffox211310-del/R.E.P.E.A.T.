@@ -28,11 +28,11 @@ body {
 
 #ascii-logo {
   color: #00ff41;
-  font-size: 6px;
+  font-size: 7px;
   line-height: 1.1;
   white-space: pre;
   text-align: center;
-  margin-left: -10px;   /* ← マイナス値で左にずれる */
+  margin-left: -7px;   /* ← マイナス値で左にずれる */
   margin-bottom: 12px;
   opacity: 0.9;
   overflow: hidden;

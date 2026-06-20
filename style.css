@@ -29,11 +29,13 @@ body {
 #ascii-logo {
   color: #00ff41;
   font-size: 6px;
-  line-height: 1.2;
+  line-height: 1.1;
   white-space: pre;
-  margin-bottom: 20px;
   text-align: center;
+  margin-left: -10px;   /* ← マイナス値で左にずれる */
+  margin-bottom: 12px;
   opacity: 0.9;
+  overflow: hidden;
 }
 
 #chat-log {

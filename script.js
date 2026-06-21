@@ -12,13 +12,17 @@ const rules = [
 ];
 
 // === メイン応答（オウム返し＋テンプレート） ===
+// === メイン応答（オウム返し＋テンプレート） ===
 function getResponse(input) {
-  // まずルールにマッチするかチェック
   for (let rule of rules) {
     if (rule.pattern.test(input)) {
-      // ★ ユーザーの言葉をそのまま文頭に置く ★
-      return `「${input}」…${rule.response}`;
+      // ★ 「」なしで、そのまま文頭に ★
+      return `${input}。${rule.response}`;
     }
+  }
+  // フォールバック
+  return `${input}。それで、どうなりましたか？`;
+}
   }
   // フォールバック（何もマッチしない場合）
   return `「${input}」…それで、どうなりましたか？`;

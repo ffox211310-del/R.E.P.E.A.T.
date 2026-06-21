@@ -1,28 +1,39 @@
 // R.E.P.E.A.T. Mk1 KODAMA — ELIZA原点回帰モード
 
-// === ELIZAルール（反射＋オウム返し） ===
+// === ELIZAルール（人生相談系） ===
 const rules = [
-  { pattern: /母|おかあさん|mother/i, response: 'お母さんとの関係について、もう少し教えて。' },
+  { pattern: /母|おかあさん|mother/i, response: '母との関係について、もう少し教えて。' },
   { pattern: /夢|ゆめ|dream/i, response: 'その夢はどんな意味があると思いますか？' },
+  { pattern: /仕事|しごと|work/i, response: '仕事について、もっと詳しく教えて。' },
   { pattern: /悲しい|つらい|sad/i, response: 'それは大変でしたね。もう少し詳しく聞かせてください。' },
   { pattern: /嬉しい|うれしい|happy/i, response: 'それは素晴らしいですね！どんな気持ちですか？' },
-  { pattern: /腹減った|お腹すいた|hungry/i, response: 'あなたは何が好きですか？' },
-  { pattern: /カレー|curry/i, response: 'それで、どうなりましたか？' },
-  { pattern: /コンピュータ|computer|AI/i, response: 'コンピュータが世界を変えると思いますか？' },
+  { pattern: /恋愛|こい|love|彼女|彼氏/i, response: '恋愛について、あなたはどう思いますか？' },
+  { pattern: /友達|ともだち|friend/i, response: '友達との関係は、あなたにとってどんな存在ですか？' },
+  { pattern: /将来|しょうらい|future/i, response: '将来について、何か不安や希望はありますか？' },
+  { pattern: /不安|ふあん|anxious/i, response: '不安な気持ち、よくわかります。何が一番気がかりですか？' },
 ];
 
-// === メイン応答（オウム返し＋テンプレート） ===
+// === メイン応答（複数キーワード対応版） ===
 function getResponse(input) {
+  const matchedResponses = [];
+
+  // すべてのルールをチェックして、マッチしたものを収集
   for (let rule of rules) {
     if (rule.pattern.test(input)) {
-      // ★ 「」なしで、そのまま文頭に ★
-      return `${input}。${rule.response}`;
+      matchedResponses.push(rule.response);
     }
   }
-  // フォールバック
+
+  // マッチしたルールが1つ以上ある場合
+  if (matchedResponses.length > 0) {
+    // ユーザーの言葉を文頭に置いて、すべての応答を「。」で結合
+    const combined = matchedResponses.join('。');
+    return `${input}。${combined}`;
+  }
+
+  // 何もマッチしなかった場合（フォールバック）
   return `${input}。それで、どうなりましたか？`;
 }
-
 
 // === 記憶（一旦オフ） ===
 // let memory = [];

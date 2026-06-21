@@ -14,14 +14,32 @@ const rules = [
   { pattern: /コンピュータ|computer|AI/i, response: 'コンピュータが世界を変えると思いますか？' },
 ];
 
-// === フォールバック（Process + Evolve） ===
+// 2つの文の類似度を計算（Jaccard係数）
+function getSimilarity(str1, str2) {
+  const words1 = str1.split(/\s+/);
+  const words2 = str2.split(/\s+/);
+  const set1 = new Set(words1);
+  const set2 = new Set(words2);
+  const intersection = new Set([...set1].filter(x => set2.has(x)));
+  const union = new Set([...set1, ...set2]);
+  return intersection.size / union.size; // 0〜1の値
+}
+
+// フォールバックを改良
 function fallback(input) {
-  const similar = memory.filter(record =>
-    record.input.split(' ').some(word => input.includes(word))
-  );
-  if (similar.length > 0) {
-    const chosen = similar[Math.floor(Math.random() * similar.length)];
-    return chosen.response + ' （以前の誰かも似たことを言っていました）';
+  let bestMatch = null;
+  let bestScore = 0;
+
+  for (let record of memory) {
+    const score = getSimilarity(input, record.input);
+    if (score > bestScore && score > 0.1) { // 0.1以上の類似度のみ
+      bestScore = score;
+      bestMatch = record;
+    }
+  }
+
+  if (bestMatch) {
+    return bestMatch.response + ' （なるほど、以前にも似た話がありました）';
   }
   return 'もっと詳しく聞かせてください。';
 }

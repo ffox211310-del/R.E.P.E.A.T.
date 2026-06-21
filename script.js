@@ -23,9 +23,7 @@ function getResponse(input) {
   return `${input}。それで、どうなりましたか？`;
 }
   }
-  // フォールバック（何もマッチしない場合）
-  return `「${input}」…それで、どうなりましたか？`;
-}
+
 
 // === 記憶（一旦オフ） ===
 // let memory = [];

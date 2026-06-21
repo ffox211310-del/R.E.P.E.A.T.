@@ -62,7 +62,6 @@ function getResponse(input, history) {
   return fallback(input);
 }
 
-// 送信時に履歴を更新
 function handleSend() {
   const input = userInput.value.trim();
   if (!input) return;
@@ -70,14 +69,20 @@ function handleSend() {
   appendMessage('YOU', input);
   const response = getResponse(input, conversationHistory);
   
-  // 履歴に追加（最大5件）
+  // 履歴に追加
   conversationHistory.push(input);
   if (conversationHistory.length > 5) {
     conversationHistory.shift();
   }
 
   remember(input, response);
-  // 表示処理...
+
+  // ★ ここでREPEATの応答を表示 ★
+  appendMessage('REPEAT', response);
+
+  // 入力欄をクリアしてフォーカス
+  userInput.value = '';
+  userInput.focus();
 }
 
 // === 記憶（Ensure） ===

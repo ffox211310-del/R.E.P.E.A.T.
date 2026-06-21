@@ -22,7 +22,6 @@ function getResponse(input) {
   // フォールバック
   return `${input}。それで、どうなりましたか？`;
 }
-  }
 
 
 // === 記憶（一旦オフ） ===

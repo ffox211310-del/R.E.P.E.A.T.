@@ -44,14 +44,40 @@ function fallback(input) {
   return 'もっと詳しく聞かせてください。';
 }
 
-// === 応答生成（メイン） ===
-function getResponse(input) {
+// 会話履歴（最大5件まで保持）
+let conversationHistory = [];
+
+function getResponse(input, history) {
+  // 1. ルールチェック（Reflect）
   for (let rule of rules) {
     if (rule.pattern.test(input)) {
+      // 履歴に基づいて少しだけ返答を変える（例：前回の話題を引き継ぐ）
+      if (history.length > 0) {
+        return rule.response + ' （前回は「' + history[history.length - 1] + '」についてでしたね）';
+      }
       return rule.response;
     }
   }
+  // 2. フォールバック（Process / Evolve）
   return fallback(input);
+}
+
+// 送信時に履歴を更新
+function handleSend() {
+  const input = userInput.value.trim();
+  if (!input) return;
+
+  appendMessage('YOU', input);
+  const response = getResponse(input, conversationHistory);
+  
+  // 履歴に追加（最大5件）
+  conversationHistory.push(input);
+  if (conversationHistory.length > 5) {
+    conversationHistory.shift();
+  }
+
+  remember(input, response);
+  // 表示処理...
 }
 
 // === 記憶（Ensure） ===

@@ -98,25 +98,7 @@ function appendMessage(speaker, text) {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-function handleSend() {
-  const input = userInput.value.trim();
-  if (!input) return;
 
-  // 表示（YOU）
-  appendMessage('YOU', input);
-
-  // 応答生成
-  const response = getResponse(input);
-  remember(input, response);
-
-  // 表示（REPEAT）
-  setTimeout(() => {
-    appendMessage('REPEAT', response);
-  }, 300); // ちょっと間を入れてレトロ感
-
-  userInput.value = '';
-  userInput.focus();
-}
 
 // Enterキーで送信
 userInput.addEventListener('keydown', (e) => {

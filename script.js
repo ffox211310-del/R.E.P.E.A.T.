@@ -12,7 +12,6 @@ const rules = [
 ];
 
 // === メイン応答（オウム返し＋テンプレート） ===
-// === メイン応答（オウム返し＋テンプレート） ===
 function getResponse(input) {
   for (let rule of rules) {
     if (rule.pattern.test(input)) {

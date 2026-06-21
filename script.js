@@ -3,15 +3,35 @@
 // === メモリ ===
 let memory = JSON.parse(localStorage.getItem('repeat_memory')) || [];
 
-// === ELIZAルール（Reflect） ===
 const rules = [
-  { pattern: /母|おかあさん|mother/i, response: 'お母さんとの関係について、もう少し教えて。' },
-  { pattern: /夢|ゆめ|dream/i, response: 'その夢はどんな意味があると思いますか？' },
-  { pattern: /悲しい|つらい|sad/i, response: 'それは大変でしたね。もう少し詳しく聞かせてください。' },
-  { pattern: /嬉しい|うれしい|happy/i, response: 'それは素晴らしいですね！どんな気持ちですか？' },
-  { pattern: /腹減った|お腹すいた|hungry/i, response: 'あなたは何が好きですか？' },
-  { pattern: /カレー|curry/i, response: 'それで、どうなりましたか？' },
-  { pattern: /コンピュータ|computer|AI/i, response: 'コンピュータが世界を変えると思いますか？' },
+  { 
+    pattern: /母|おかあさん|mother/i, 
+    response: (input) => `「${input}」…お母さんとの関係について、もう少し教えて。` 
+  },
+  { 
+    pattern: /夢|ゆめ|dream/i, 
+    response: (input) => `「${input}」…その夢はどんな意味があると思いますか？` 
+  },
+  { 
+    pattern: /悲しい|つらい|sad/i, 
+    response: (input) => `「${input}」…それは大変でしたね。もう少し詳しく聞かせてください。` 
+  },
+  { 
+    pattern: /嬉しい|うれしい|happy/i, 
+    response: (input) => `「${input}」…それは素晴らしいですね！どんな気持ちですか？` 
+  },
+  { 
+    pattern: /腹減った|お腹すいた|hungry/i, 
+    response: (input) => `「${input}」…あなたは何が好きですか？` 
+  },
+  { 
+    pattern: /カレー|curry/i, 
+    response: (input) => `「${input}」…それで、どうなりましたか？` 
+  },
+  { 
+    pattern: /コンピュータ|computer|AI/i, 
+    response: (input) => `「${input}」…コンピュータが世界を変えると思いますか？` 
+  },
 ];
 
 // 2つの文の類似度を計算（Jaccard係数）
@@ -51,14 +71,17 @@ function getResponse(input, history) {
   // 1. ルールチェック（Reflect）
   for (let rule of rules) {
     if (rule.pattern.test(input)) {
-      // 履歴に基づいて少しだけ返答を変える（例：前回の話題を引き継ぐ）
+      // ★ response が関数になったので、input を渡して実行 ★
+      let reply = rule.response(input);
+      
+      // 履歴があれば追加
       if (history.length > 0) {
-        return rule.response + ' （前回は「' + history[history.length - 1] + '」についてでしたね）';
+        reply += ' （前回は「' + history[history.length - 1] + '」についてでしたね）';
       }
-      return rule.response;
+      return reply;
     }
   }
-  // 2. フォールバック（Process / Evolve）
+  // 2. フォールバック
   return fallback(input);
 }
 
